@@ -118,5 +118,21 @@ describe("TipJar Contract", function () {
       expect(allTips[1].message).to.equal("Mensaje 2");
       expect(allTips[1].amount).to.equal(LARGE_TIP_AMOUNT);
     });
+    it("Debería devolver correctamente las propinas por dirección", async function () {
+      // addr1 y addr2 envían propinas
+      await tipJar.connect(addr1).tip("Mensaje A", { value: TIP_AMOUNT });
+      await tipJar.connect(addr1).tip("Mensaje B", { value: LARGE_TIP_AMOUNT });
+      await tipJar.connect(addr2).tip("Mensaje C", { value: TIP_AMOUNT });
+
+      const tipsAddr1 = await tipJar.getTipsByAddress(await addr1.getAddress());
+      const tipsAddr2 = await tipJar.getTipsByAddress(await addr2.getAddress());
+
+      expect(tipsAddr1.length).to.equal(2);
+      expect(tipsAddr1[0].message).to.equal("Mensaje A");
+      expect(tipsAddr1[1].message).to.equal("Mensaje B");
+
+      expect(tipsAddr2.length).to.equal(1);
+      expect(tipsAddr2[0].message).to.equal("Mensaje C");
+    });
   });
 });

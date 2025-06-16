@@ -207,24 +207,24 @@ tipjar-contract/
 
 ## 🧪 Casos de Prueba
 
-Los tests cubren los siguientes escenarios:
+Los tests cubren los siguientes escenarios (ver `test/TipJar.ts`):
 
-### Funcionalidad Básica
+### Funcionalidad Básica (`describe("Funcionalidad básica")`)
 
-- ✅ Aceptar propinas y emitir eventos
-- ✅ Rechazar propinas con valor 0
-- ✅ Verificar parámetros del evento NewTip
+- ✅ Aceptar propinas y emitir el evento `NewTip` con todos los parámetros (incluido `timestamp`)
+- ✅ Rechazar propinas con valor 0 con el mensaje `"El monto debe ser mayor que 0"`
 
-### Gestión de Fondos
+### Gestión de Fondos (`describe("Gestión de fondos")`)
 
-- ✅ Restricción de retiro solo para owner
-- ✅ Transferencia correcta de fondos
+- ✅ Permitir solo al owner retirar fondos
+- ✅ Verificar cambio de balances tras el retiro (`changeEtherBalances`)
 
-### Consultas y Visibilidad
+### Consultas y Visibilidad (`describe("Consultas y visibilidad")`)
 
-- ✅ Actualización del balance del contrato
-- ✅ Verificación de la dirección del owner
-- ✅ Almacenamiento y recuperación de propinas
+- ✅ Comprobación del balance del contrato antes y después de propinas
+- ✅ Confirmación de la dirección del owner
+- ✅ Almacenamiento correcto de mensajes, montos y remitentes en las propinas
+- ✅ Obtener todas las propinas por dirección usando `getTipsByAddress(address)`
 
 ## 🔍 Comandos Útiles
 
@@ -256,6 +256,7 @@ npx hardhat console --network sepolia
 - `getAllTips()` - Obtener todas las propinas
 - `getTipCount()` - Obtener número total de propinas
 - `owner()` - Obtener dirección del propietario
+- `getTipsByAddress(address _tipper)` - Obtener todas las propinas enviadas por una dirección específica
 
 ### Funciones Restringidas
 
@@ -300,14 +301,6 @@ npx hardhat console --network sepolia
 - Verifica que el ABI coincida con el contrato desplegado
 - Confirma que estás usando la dirección correcta del contrato
 
-## 📄 Licencia
-
-MIT License - Ver archivo LICENSE para más detalles.
-
-## 👨‍💻 Autor
-
-**Mauricio R. Ferreyra** - Práctico Módulo 4
-
 ---
 
 ## 📚 Recursos Adicionales
@@ -317,4 +310,112 @@ MIT License - Ver archivo LICENSE para más detalles.
 - [Ethers.js Documentation](https://docs.ethers.org/)
 - [Sepolia Testnet Explorer](https://sepolia.etherscan.io/)
 
-¿Encontraste un bug o tienes una sugerencia? ¡Abre un issue!
+## 🖥️ Interfaz de Usuario (ReactJS)
+
+La aplicación web permite interactuar fácilmente con el contrato **TipJar** desde el navegador, facilitando tanto el envío de propinas como la gestión de fondos.
+
+---
+
+### ⚛️ Tecnologías UI
+
+- **ReactJS** – Librería principal para la interfaz
+- **Vite** – Entorno de desarrollo rápido
+- **Ethers.js v6** – Interacción con Ethereum
+- **TypeScript** – Tipado estático robusto
+- **CSS Modules** – Estilos encapsulados por componente
+
+---
+
+### 🗂️ Estructura de Archivos
+
+```bash
+src/
+├── App.tsx               # Componente principal
+├── App.css               # Estilos globales
+├── abi/
+│   └── TipJar.json       # ABI del contrato compilado
+└── main.tsx              # Punto de entrada de la app
+```
+
+### ✨ Funcionalidades
+
+✅ Conexión de Wallet con MetaMask  
+✅ Envío de propinas con mensajes personalizados  
+✅ Visualización en tiempo real de:  
+&nbsp;&nbsp;&nbsp;&nbsp;• Dirección del owner  
+&nbsp;&nbsp;&nbsp;&nbsp;• Balance del usuario  
+&nbsp;&nbsp;&nbsp;&nbsp;• Balance acumulado del contrato  
+✅ Historial completo de propinas con filtro activo  
+✅ Retiro de fondos (solo visible para el owner)
+
+### 🧩 Componentes Clave (`useState`)
+
+```tsx
+const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
+const [signer, setSigner] = useState<ethers.Signer | null>(null);
+const [contract, setContract] = useState<TipJarContract | null>(null);
+const [account, setAccount] = useState<string>("");
+const [tips, setTips] = useState<Tip[]>([]);
+const [isOwner, setIsOwner] = useState<boolean>(false);
+```
+
+### 🔄 Flujos Principales
+
+1. **Inicialización**
+
+   - Conexión automática a MetaMask
+   - Carga del contrato mediante `ethers.Contract`
+   - Verificación de si el usuario conectado es el owner
+   - Obtención de balances y tips históricos
+
+2. **Envío de Propina**
+
+   - Validación de mensaje y balance
+   - Ejecución de `contract.tip()`
+   - Confirmación on-chain y actualización del estado
+
+3. **Retiro de Fondos**
+   - Ejecuta `contract.withdraw()` (solo disponible para owner)
+   - Actualiza balance del contrato y del owner tras confirmación
+
+### 🎨 Experiencia de Usuario (UX)
+
+| Elemento UX                  | Descripción                                                    |
+| ---------------------------- | -------------------------------------------------------------- |
+| ✅ Validación de formularios | Evita inputs vacíos y valores inválidos                        |
+| 🔄 Indicadores de carga      | Spinners durante interacciones con la blockchain               |
+| 🔍 Formateo amigable         | ETH y direcciones presentados de forma legible                 |
+| 🛑 Mensajes de error         | Feedback contextual según error (API, MetaMask, balance, etc.) |
+| 📂 Toggle del historial      | Mostrar/ocultar propinas anteriores con control visual         |
+| 👑 Identificación de owner   | Visual para mostrar si el usuario conectado es el owner        |
+
+🚀 Ejecución Local
+
+1. Instalar dependencias
+
+```bash
+   npm install
+```
+
+2. Configurar archivo .env.local
+
+```bash
+   VITE_CONTRACT_ADDRESS=0x1fBb196F7009bF40b2Fa2B53DD42521BA4e8535B
+```
+
+3. Iniciar servidor de desarrollo
+
+```bash
+   npm run dev
+```
+
+## 📄 Licencia
+
+MIT License - Ver archivo LICENSE para más detalles.
+
+## 👨‍💻 Autor
+
+**Mauricio R. Ferreyra** - Práctico Módulo 4
+
+¿Encontraste un bug o tienes una sugerencia?
+📬 ¡Abre un issue o contribuye al repositorio!

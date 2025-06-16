@@ -1,0 +1,343 @@
+/* ===== Variables y Estilos Base ===== */
+:root {
+  --primary-color: #3f51b5;
+  --primary-hover: #303f9f;
+  --danger-color: #f44336;
+  --danger-hover: #d32f2f;
+  --success-color: #4caf50;
+  --text-color: #212529;
+  --text-light: #6c757d;
+  --bg-color: #f8f9fa;
+  --border-color: #dee2e6;
+  --disabled-color: #b0bec5;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* ===== Layout y Contenedores ===== */
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 640px) {
+  .container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+/* ===== Tipografía ===== */
+h1,
+h2,
+h3 {
+  color: var(--primary-color);
+  margin-top: 0;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+p {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Componentes de Formulario ===== */
+.tip-form {
+  display: flex;
+  gap: 12px;
+  margin: 2rem 0;
+}
+
+@media (max-width: 640px) {
+  .tip-form {
+    flex-direction: column;
+  }
+}
+
+input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* ===== Botones ===== */
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background-color: var(--disabled-color);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.withdraw {
+  display: block;
+  margin: 0 auto 2rem;
+  background-color: var(--danger-color);
+  width: 100%;
+  max-width: 200px;
+}
+
+.withdraw:hover {
+  background-color: var(--danger-hover);
+}
+
+.connect-wallet {
+  margin: 2rem auto;
+  display: block;
+  padding: 12px 24px;
+}
+
+/* ===== Lista de Propinas ===== */
+.tip-card {
+  list-style: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1.5rem;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+  transition: transform 0.2s ease;
+}
+
+.tip-card:hover {
+  transform: translateX(4px);
+}
+
+.tip-list strong {
+  color: var(--primary-color);
+}
+
+.tip-list small {
+  display: block;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* ===== Componentes de Estado ===== */
+.loading {
+  text-align: center;
+  padding: 1rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-radius: 8px;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.error {
+  text-align: center;
+  padding: 1rem;
+  background-color: #ffebee;
+  color: var(--danger-color);
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* ===== Componentes Específicos ===== */
+.tips-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.toggle-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn.showing {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.toggle-btn.hidden {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.toggle-btn:disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+.account-info {
+  background-color: var(--bg-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.account-info p {
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.owner-badge {
+  color: var(--danger-color);
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.switch-account {
+  padding: 0.5rem 1rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.switch-account:hover {
+  background-color: #bbdefb;
+}
+
+.switch-account:disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+/* ===== Animaciones ===== */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+/* Estilos para el input de cantidad */
+.amount-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.amount-input input {
+  padding-right: 40px;
+  width: 100px;
+}
+
+.amount-input span {
+  position: absolute;
+  right: 15px;
+  color: #666;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 640px) {
+  .tip-form {
+    flex-direction: column;
+  }
+
+  .amount-input {
+    width: 100%;
+  }
+
+  .amount-input input {
+    width: 100%;
+  }
+}
+
+.tip-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.tip-list li {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.active-tip {
+  border-left: 4px solid #4caf50;
+  padding-left: 8px;
+}
+
+.withdrawn-tip {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
